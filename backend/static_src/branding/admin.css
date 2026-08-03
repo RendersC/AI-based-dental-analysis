@@ -1,0 +1,22 @@
+.main-sidebar .brand-link .brand-image {
+  max-height: 44px;
+  height: 44px;
+  width: 44px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  margin-left: 4px;
+  margin-right: 10px;
+  opacity: 1;
+}
+
+.main-sidebar .brand-link {
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+.login-logo img,
+.register-logo img {
+  max-height: 96px;
+  height: 96px;
+  width: 96px;
+}

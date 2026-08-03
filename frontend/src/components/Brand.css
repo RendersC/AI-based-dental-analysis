@@ -1,0 +1,45 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand__logo {
+  flex: none;
+  filter: drop-shadow(0 6px 18px rgba(11, 61, 107, 0.18));
+}
+.brand__name {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(90deg, #c81f5a 0%, #7b2fbe 48%, #1f8fb0 82%, #0b3d6b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  white-space: nowrap;
+}
+
+/* sm — навбары приложения */
+.brand--sm .brand__logo { width: 40px; height: 40px; }
+.brand--sm .brand__name { font-size: 18px; }
+
+/* md — стандартный навбар лендинга */
+.brand--md { gap: 12px; }
+.brand--md .brand__logo { width: 56px; height: 56px; }
+.brand--md .brand__name { font-size: 22px; }
+
+/* lg — hero на Login/Register */
+.brand--lg { gap: 14px; }
+.brand--lg .brand__logo { width: 88px; height: 88px; }
+.brand--lg .brand__name { font-size: 28px; }
+
+/* На узких экранах (≤414px) lg ужимается чтобы влезть в карточку. */
+@media (max-width: 414px) {
+  .brand--lg { gap: 10px; }
+  .brand--lg .brand__logo { width: 64px; height: 64px; }
+  .brand--lg .brand__name { font-size: 22px; }
+  .brand--sm .brand__logo { width: 32px; height: 32px; }
+  .brand--sm .brand__name { font-size: 16px; }
+}

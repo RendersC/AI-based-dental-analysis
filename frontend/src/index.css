@@ -1,0 +1,97 @@
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background-color: #f7f9fb;
+    color: #191c1e;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  /* Glass card — auth pages */
+  .glass-card {
+    @apply bg-white/90 backdrop-blur-2xl rounded p-5 sm:p-6;
+    border: 1px solid rgb(193 199 210 / 0.55);
+    box-shadow: 0 4px 24px rgb(0 84 141 / 0.08), 0 1px 3px rgb(0 0 0 / 0.04);
+  }
+
+  /* Standard card — dashboard */
+  .ds-card {
+    @apply bg-white rounded p-4 sm:p-5;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 3px rgb(0 84 141 / 0.05);
+  }
+
+  /* Form label */
+  .ds-label {
+    @apply block text-xs font-semibold tracking-widest text-on-surface-variant mb-1.5 uppercase;
+    font-family: 'Geist', 'Inter', system-ui, sans-serif;
+  }
+
+  /* Input */
+  .ds-input {
+    @apply w-full px-3 py-2.5 rounded text-sm text-on-surface placeholder-outline bg-white
+           transition duration-150 focus:outline-none;
+    border: 1px solid #c1c7d2;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .ds-input:focus {
+    border-color: #00548d;
+    box-shadow: 0 0 0 3px rgb(0 84 141 / 0.10);
+  }
+  .ds-input-error {
+    border-color: #ba1a1a !important;
+  }
+  .ds-input-error:focus {
+    box-shadow: 0 0 0 3px rgb(186 26 26 / 0.10) !important;
+  }
+
+  /* Primary button */
+  .ds-btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2.5 rounded font-medium text-sm text-white
+           disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150;
+    font-family: 'Geist', 'Inter', system-ui, sans-serif;
+    background: #00548d;
+    box-shadow: 0 2px 8px rgb(0 84 141 / 0.28);
+  }
+  .ds-btn-primary:hover:not(:disabled) {
+    background: #1a6daf;
+    box-shadow: 0 4px 14px rgb(0 84 141 / 0.36);
+    transform: translateY(-1px);
+  }
+  .ds-btn-primary:active:not(:disabled) {
+    background: #004d82;
+    transform: translateY(0);
+  }
+
+  /* Ghost button */
+  .ds-btn-ghost {
+    @apply inline-flex items-center justify-center px-3 py-1.5 rounded font-medium text-sm text-on-surface-variant
+           transition-colors duration-150 focus:outline-none;
+    font-family: 'Geist', 'Inter', system-ui, sans-serif;
+    border: 1px solid #E2E8F0;
+  }
+  .ds-btn-ghost:hover {
+    background: #f2f4f6;
+  }
+
+  /* Spinner */
+  .ds-spinner {
+    @apply animate-spin h-4 w-4;
+  }
+}

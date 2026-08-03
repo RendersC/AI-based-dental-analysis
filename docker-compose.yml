@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    # Канал KZ→RU по публичному IP рубит TCP-пакеты с данными (фильтр транзита),
+    # поэтому трафик к БД и MinIO идёт через WireGuard-туннель (10.8.0.1 = RU).
+    # POSTGRES_HOST уже 10.8.0.1 в .env; здесь домен MinIO заворачиваем на туннель,
+    # чтобы PUT фото от бэкенда шёл внутри туннеля. Браузеры берут публичный DNS
+    # (RU public IP) для presigned-ссылок — их это не касается.
+    extra_hosts:
+      - "media.radugaulybok-dent.ru:10.8.0.1"
+    volumes:
+      - ./media:/app/media
+      - ./static:/app/static
+      - ./secrets:/app/secrets:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+    command: >-
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             python manage.py init_settings &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4 --timeout 90 --graceful-timeout 30 --access-logfile - --error-logfile -"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./static:/static:ro
+      - ./media:/media:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - backend
